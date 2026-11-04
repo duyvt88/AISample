@@ -1,0 +1,89 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+@using System.Text
+@using Microsoft.Extensions.AI
+@using OllamaSharp
+@inject IJSRuntime JS
+
+<PageTitle>AI Assistant</PageTitle>
+
+<h1>AI Assistant (llama3.2)</h1>
+
+<div id="messContent">
+    @foreach (var message in messages)
+    {
+        <div class="@message.Role">
+            <b>@message.Role:</b> @message.Content
+        </div>
+    }
+    @answer.ToString()
+</div>
+
+<div>
+    <input class="ipQuestion" @bind="question" @onkeyup="HandleKeyUp" placeholder="Type your message here..." />
+</div>
+
+<script type="text/javascript">
+    window.scrollToBottom = function (id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollTop = el.scrollHeight;
+    };
+</script>
+
+@code {
+    private string question { get; set; } = string.Empty;
+    private StringBuilder answer { get; set; } = new();
+    private List<Message> messages { get; set; } = new List<Message>();
+
+    List<ChatMessage> chatHistory = [];
+
+    IChatClient client = ((IChatClient)new OllamaApiClient(
+        "http://localhost:11434", "llama3.2"))
+        .AsBuilder()
+        .UseFunctionInvocation()
+        .Build();
+
+    private async Task HandleKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(question))
+        {
+            messages.Add(new Message { Role = "User", Content = question });
+            chatHistory.Add(new(ChatRole.User, question));
+            question = string.Empty;
+            
+            answer.Append("Thinking ...");
+            StateHasChanged();
+            await JS.InvokeVoidAsync("scrollToBottom", "messContent");
+
+            // Stream response
+            var updates = new List<ChatResponseUpdate>();
+            await foreach (ChatResponseUpdate update in
+                client.GetStreamingResponseAsync(chatHistory))
+            {
+                updates.Add(update);
+
+                if (answer.ToString() == "Thinking ...") answer.Clear();
+                answer.Append(update.Text);
+
+                // Update UI immediately
+                await InvokeAsync(StateHasChanged);
+                await JS.InvokeVoidAsync("scrollToBottom", "messContent");
+            }
+
+            // Add streamed response to history
+            chatHistory.AddMessages(updates);
+            messages.Add(new Message { Role = "Assistant", Content = answer.ToString() });
+            
+            answer.Clear();
+
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private class Message
+    {
+        public string Role { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+    }
+}

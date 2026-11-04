@@ -1,0 +1,91 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\up\\study\\AISample\\AISample\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|c:\\up\\study\\aisample\\aisample\\aisample\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|solutionrelative:aisample\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|c:\\up\\study\\aisample\\aisample\\aisample\\wwwroot\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|solutionrelative:aisample\\wwwroot\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:134:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "app.css",
+              "DocumentMoniker": "C:\\up\\study\\AISample\\AISample\\AISample\\wwwroot\\app.css",
+              "RelativeDocumentMoniker": "AISample\\wwwroot\\app.css",
+              "ToolTip": "C:\\up\\study\\AISample\\AISample\\AISample\\wwwroot\\app.css",
+              "RelativeToolTip": "AISample\\wwwroot\\app.css",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAAEYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-11-03T03:25:55.375Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\up\\study\\AISample\\AISample\\AISample\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "AISample\\Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\up\\study\\AISample\\AISample\\AISample\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "AISample\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-03T03:23:35.839Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{6324226f-61b6-4f28-92ee-18d4b5fe1e48}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
