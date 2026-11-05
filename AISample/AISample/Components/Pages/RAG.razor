@@ -1,0 +1,107 @@
+﻿@page "/RAG"
+@rendermode InteractiveServer
+
+@using System.Text
+@using Microsoft.Extensions.AI
+@using OllamaSharp
+@using CommunityToolkit.VectorData.InMemory
+@using AISample.DataModel
+
+<PageTitle>RAG & Semantic Search</PageTitle>
+
+<h1>RAG & Semantic Search</h1>
+
+<b>Local movies data</b>
+<table class="mt-2">
+    @foreach (var movie in movieList)
+    {
+        <tr>            
+            <td>@movie.Title</td>
+            <td>@movie.Description</td>
+        </tr>
+    }
+</table>
+
+<div class="mt-3 mb-2">
+    <input class="ipQuestion" @bind="question" @onkeyup="HandleKeyUp" placeholder="Movie title or description..." />
+</div>
+
+@if (!string.IsNullOrEmpty(question))
+{
+    <b>Result from Local movies data</b>
+    <table class="mt-2 mb-3">
+        @foreach (var movie in movieRs)
+        {
+            <tr>
+                <td>@movie.Title</td>
+                <td>@movie.Description</td>
+            </tr>
+        }
+    </table>
+
+    <b>Result from AI model data (llama3.2)</b>
+    <div>@answer.ToString()</div>
+}
+
+@code {
+    private string question { get; set; } = string.Empty;
+    private StringBuilder answer { get; set; } = new();
+
+    List<Movie<string>> movieList = MovieFactory<string>.GetMovieList();
+    List<Movie<string>> movieRs = new List<Movie<string>>();
+
+    IChatClient client = ((IChatClient)new OllamaApiClient(
+        "http://localhost:11434", "llama3.2"))
+        .AsBuilder()
+        .UseFunctionInvocation()
+        .Build();
+
+    IEmbeddingGenerator<string, Embedding<float>> generator =
+        new OllamaApiClient(new Uri("http://localhost:11434"), "all-minilm");  
+
+    // Vector store
+    InMemoryVectorStore vectorStore = new InMemoryVectorStore();
+    InMemoryCollection<string, MovieVectorRecord> collection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        collection = vectorStore.GetCollection<string, MovieVectorRecord>("movies");
+        await collection.EnsureCollectionExistsAsync();
+
+        // Embed each movie description and upsert it into the collection.
+        foreach (var movie in movieList)
+        {
+            var embedding = await generator.GenerateVectorAsync(movie.Description!);
+            await collection.UpsertAsync(new MovieVectorRecord
+            {
+                Key = movie.Key,
+                Title = movie.Title!,
+                Description = movie.Description!,
+                Embedding = embedding
+            });
+        }
+    }
+
+    private async Task HandleKeyUp(KeyboardEventArgs e)
+    {       
+
+        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(question))
+        {
+            answer.Append("Thinking ...");
+            StateHasChanged();
+
+            var queryEmbedding = await generator.GenerateVectorAsync(question);            
+            await foreach (var result in collection.SearchAsync(queryEmbedding, top: 2))
+            {
+                movieRs.Add(new Movie<string>() { Title = result.Record.Title, Description = result.Record.Description });
+                StateHasChanged();
+            }
+
+            var response = await client.GetResponseAsync(question);
+            answer.Clear();
+            answer.Append(response);
+            StateHasChanged();
+        }
+    }
+    
+}
