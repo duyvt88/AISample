@@ -1,5 +1,8 @@
 using AISample.Components;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using OllamaSharp;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +17,8 @@ builder.Services.AddChatClient(services =>
     return ((IChatClient)new OllamaApiClient(
         "http://localhost:11434", "llama3.2"))
         .AsBuilder()
-        .UseFunctionInvocation()
+        .UseDistributedCache(new MemoryDistributedCache(
+            Options.Create(new MemoryDistributedCacheOptions())))
         .Build();
 });
 builder.Services.AddEmbeddingGenerator<string, Embedding<float>>(services =>
