@@ -7,16 +7,16 @@
       "RelativeMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|solutionrelative:aisample\\components\\pages\\rag.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|c:\\up\\study\\aisample\\aisample\\aisample\\datamodel\\movievectorrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|solutionrelative:aisample\\datamodel\\movievectorrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|c:\\up\\study\\aisample\\aisample\\aisample\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|solutionrelative:aisample\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|c:\\up\\study\\aisample\\aisample\\aisample\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|solutionrelative:aisample\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|c:\\up\\study\\aisample\\aisample\\aisample\\datamodel\\movievectorrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|solutionrelative:aisample\\datamodel\\movievectorrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CD9960C6-69B9-9039-A9E1-AD1D16FC5551}|AISample\\AISample.csproj|c:\\up\\study\\aisample\\aisample\\aisample\\datamodel\\moviefactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -70,7 +70,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "MovieVectorRecord.cs",
               "DocumentMoniker": "C:\\up\\study\\AISample\\AISample\\AISample\\DataModel\\MovieVectorRecord.cs",
               "RelativeDocumentMoniker": "AISample\\DataModel\\MovieVectorRecord.cs",
@@ -78,7 +78,8 @@
               "RelativeToolTip": "AISample\\DataModel\\MovieVectorRecord.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-05T10:04:50.811Z"
+              "WhenOpened": "2026-11-05T10:04:50.811Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -86,16 +87,16 @@
               "Title": "RAG.razor",
               "DocumentMoniker": "C:\\up\\study\\AISample\\AISample\\AISample\\Components\\Pages\\RAG.razor",
               "RelativeDocumentMoniker": "AISample\\Components\\Pages\\RAG.razor",
-              "ToolTip": "C:\\up\\study\\AISample\\AISample\\AISample\\Components\\Pages\\RAG.razor \u2B24",
-              "RelativeToolTip": "AISample\\Components\\Pages\\RAG.razor \u2B24",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAALAAAAAAAAAA==",
+              "ToolTip": "C:\\up\\study\\AISample\\AISample\\AISample\\Components\\Pages\\RAG.razor",
+              "RelativeToolTip": "AISample\\Components\\Pages\\RAG.razor",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAF0AAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-11-05T09:13:42.404Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "C:\\up\\study\\AISample\\AISample\\AISample\\Components\\Layout\\NavMenu.razor",
               "RelativeDocumentMoniker": "AISample\\Components\\Layout\\NavMenu.razor",
@@ -103,8 +104,7 @@
               "RelativeToolTip": "AISample\\Components\\Layout\\NavMenu.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-11-05T08:52:10.837Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-11-05T08:52:10.837Z"
             },
             {
               "$type": "Document",
@@ -144,7 +144,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Home.razor",
               "DocumentMoniker": "C:\\up\\study\\AISample\\AISample\\AISample\\Components\\Pages\\Home.razor",
               "RelativeDocumentMoniker": "AISample\\Components\\Pages\\Home.razor",

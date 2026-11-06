@@ -91,7 +91,7 @@
             StateHasChanged();
 
             var queryEmbedding = await generator.GenerateVectorAsync(question);            
-            await foreach (var result in collection.SearchAsync(queryEmbedding, top: 2))
+            await foreach (var result in collection.SearchAsync(queryEmbedding, top: 3).Where(r => r.Score > 0.6))
             {
                 movieRs.Add(new Movie<string>() { Title = result.Record.Title, Description = result.Record.Description });
                 StateHasChanged();
@@ -99,7 +99,7 @@
 
             var response = await client.GetResponseAsync(question);
             answer.Clear();
-            answer.Append(response);
+            answer.Append(response.Text);
             StateHasChanged();
         }
     }
