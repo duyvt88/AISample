@@ -75,3 +75,7 @@ h1:focus {
 .ipQuestion {
     width: 100%;
 }
+
+table td:first-child {
+    min-width:100px;
+}

@@ -5,6 +5,7 @@
 @using Microsoft.Extensions.AI
 @using OllamaSharp
 @inject IJSRuntime JS
+@inject IChatClient client
 
 <PageTitle>AI Assistant</PageTitle>
 
@@ -37,12 +38,6 @@
     private List<Message> messages { get; set; } = new List<Message>();
 
     List<ChatMessage> chatHistory = [];
-
-    IChatClient client = ((IChatClient)new OllamaApiClient(
-        "http://localhost:11434", "llama3.2"))
-        .AsBuilder()
-        .UseFunctionInvocation()
-        .Build();
 
     private async Task HandleKeyUp(KeyboardEventArgs e)
     {

@@ -1,10 +1,26 @@
 using AISample.Components;
+using Microsoft.Extensions.AI;
+using OllamaSharp;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Register the chat client with middleware
+builder.Services.AddChatClient(services =>
+{    
+    return ((IChatClient)new OllamaApiClient(
+        "http://localhost:11434", "llama3.2"))
+        .AsBuilder()
+        .UseFunctionInvocation()
+        .Build();
+});
+builder.Services.AddEmbeddingGenerator<string, Embedding<float>>(services =>
+{
+    return new OllamaApiClient(new Uri("http://localhost:11434"), "all-minilm");
+});
 
 var app = builder.Build();
 

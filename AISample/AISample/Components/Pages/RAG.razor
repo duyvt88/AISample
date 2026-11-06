@@ -3,9 +3,10 @@
 
 @using System.Text
 @using Microsoft.Extensions.AI
-@using OllamaSharp
 @using CommunityToolkit.VectorData.InMemory
 @using AISample.DataModel
+@inject IChatClient client
+@inject IEmbeddingGenerator<string, Embedding<float>> generator
 
 <PageTitle>RAG & Semantic Search</PageTitle>
 
@@ -47,38 +48,38 @@
     private string question { get; set; } = string.Empty;
     private StringBuilder answer { get; set; } = new();
 
-    List<Movie<string>> movieList = MovieFactory<string>.GetMovieList();
-    List<Movie<string>> movieRs = new List<Movie<string>>();
-
-    IChatClient client = ((IChatClient)new OllamaApiClient(
-        "http://localhost:11434", "llama3.2"))
-        .AsBuilder()
-        .UseFunctionInvocation()
-        .Build();
-
-    IEmbeddingGenerator<string, Embedding<float>> generator =
-        new OllamaApiClient(new Uri("http://localhost:11434"), "all-minilm");  
+    List<Movie<string>> movieList = new List<Movie<string>>();
+    List<Movie<string>> movieRs = new List<Movie<string>>();    
 
     // Vector store
     InMemoryVectorStore vectorStore = new InMemoryVectorStore();
     InMemoryCollection<string, MovieVectorRecord> collection;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        collection = vectorStore.GetCollection<string, MovieVectorRecord>("movies");
-        await collection.EnsureCollectionExistsAsync();
-
-        // Embed each movie description and upsert it into the collection.
-        foreach (var movie in movieList)
+        // execute conditionally for loading data, otherwise this will load
+        // every time the page refreshes
+        if (firstRender)
         {
-            var embedding = await generator.GenerateVectorAsync(movie.Description!);
-            await collection.UpsertAsync(new MovieVectorRecord
+            movieList = MovieFactory<string>.GetMovieList();
+
+            collection = vectorStore.GetCollection<string, MovieVectorRecord>("movies");
+            await collection.EnsureCollectionExistsAsync();
+
+            // Embed each movie description and upsert it into the collection.
+            foreach (var movie in movieList)
             {
-                Key = movie.Key,
-                Title = movie.Title!,
-                Description = movie.Description!,
-                Embedding = embedding
-            });
+                var embedding = await generator.GenerateVectorAsync(movie.Description!);
+                await collection.UpsertAsync(new MovieVectorRecord
+                {
+                    Key = movie.Key,
+                    Title = movie.Title!,
+                    Description = movie.Description!,
+                    Embedding = embedding
+                });
+            }
+
+            StateHasChanged();
         }
     }
 
