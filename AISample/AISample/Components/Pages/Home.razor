@@ -3,13 +3,12 @@
 
 @using System.Text
 @using Microsoft.Extensions.AI
-@using OllamaSharp
 @inject IJSRuntime JS
 @inject IChatClient client
 
 <PageTitle>AI Assistant</PageTitle>
 
-<h1>AI Assistant (llama3.2)</h1>
+<h1>AI Assistant</h1>
 
 <div id="messContent">
     @foreach (var message in messages)
@@ -22,7 +21,11 @@
 </div>
 
 <div>
-    <input class="ipQuestion" @bind="question" @onkeyup="HandleKeyUp" placeholder="Type your message here..." />
+    <InputFile OnChange="InputFileChange" accept="image/png, image/gif, image/jpeg" /> <button class="btn btn-primary" @onclick="UploadFile">Upload</button>
+    <div>@uploadMessage</div>
+    <div class="mt-1">
+        <input class="ipQuestion" @bind="message" @onkeyup="HandleKeyUp" placeholder="Type your message here..." /> <button @onclick="SendMessage" class="btn btn-primary">Send Message</button>
+    </div>    
 </div>
 
 <script type="text/javascript">
@@ -33,20 +36,41 @@
 </script>
 
 @code {
-    private string question { get; set; } = string.Empty;
+    private string message { get; set; } = string.Empty;
     private StringBuilder answer { get; set; } = new();
     private List<Message> messages { get; set; } = new List<Message>();
-
     List<ChatMessage> chatHistory = [];
+
+    private IBrowserFile browserFile;
+    private string uploadMessage { get; set; } = string.Empty;
+    private byte[]? _attByte;
+    private string _attType = string.Empty;
+
 
     private async Task HandleKeyUp(KeyboardEventArgs e)
     {
-        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(question))
+        if (e.Key == "Enter")
         {
-            messages.Add(new Message { Role = "User", Content = question });
-            chatHistory.Add(new(ChatRole.User, question));
-            question = string.Empty;
-            
+            await SendMessage();
+        }
+    }
+
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(message))
+        {
+            messages.Add(new Message { Role = "User", Content = message });
+            if (_attByte != null)
+            {
+                chatHistory.Add(new ChatMessage(ChatRole.User, new AIContent[] { new TextContent(message), new DataContent(_attByte, _attType) }));
+            }
+            else
+            {
+                chatHistory.Add(new ChatMessage(ChatRole.User, message));
+            }
+
+            message = string.Empty;
+
             answer.Append("Thinking ...");
             StateHasChanged();
             await JS.InvokeVoidAsync("scrollToBottom", "messContent");
@@ -69,10 +93,40 @@
             // Add streamed response to history
             chatHistory.AddMessages(updates);
             messages.Add(new Message { Role = "Assistant", Content = answer.ToString() });
-            
+
             answer.Clear();
 
             await InvokeAsync(StateHasChanged);
+        }        
+    }
+
+    private void InputFileChange(InputFileChangeEventArgs e)
+    {
+        browserFile = e.File;
+        uploadMessage = string.Empty; // Clear previous messages
+    }
+
+    private async Task UploadFile()
+    {
+        if (browserFile != null && browserFile.Size > 0)
+        {
+            try
+            {
+                using var memoryStream = new MemoryStream();
+                await browserFile.OpenReadStream(1024 * 1024 * 10).CopyToAsync(memoryStream);
+                _attByte = memoryStream.ToArray();
+                _attType = browserFile.ContentType;
+                uploadMessage = "File uploaded successfully!";
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                uploadMessage = "An error occurred: " + ex.Message;
+            }
+        }
+        else
+        {
+            uploadMessage = "Please select a file to upload.";
         }
     }
 

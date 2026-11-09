@@ -15,7 +15,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddChatClient(services =>
 {    
     return ((IChatClient)new OllamaApiClient(
-        "http://localhost:11434", "llama3.2"))
+        "http://localhost:11434", "llava"))
         .AsBuilder()
         .UseDistributedCache(new MemoryDistributedCache(
             Options.Create(new MemoryDistributedCacheOptions())))
