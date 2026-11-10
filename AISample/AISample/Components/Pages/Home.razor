@@ -5,6 +5,8 @@
 @using Microsoft.Extensions.AI
 @inject IJSRuntime JS
 @inject IChatClient client
+@using PDFtoImage
+@using SkiaSharp
 
 <PageTitle>AI Assistant</PageTitle>
 
@@ -21,7 +23,7 @@
 </div>
 
 <div>
-    <InputFile OnChange="InputFileChange" accept="image/png, image/gif, image/jpeg" /> <button class="btn btn-primary" @onclick="UploadFile">Upload</button>
+    <InputFile OnChange="InputFileChange" accept="image/png, image/gif, image/jpeg, application/pdf" /> <button class="btn btn-primary" @onclick="UploadFile">Upload</button>
     <div>@uploadMessage</div>
     <div class="mt-1">
         <input class="ipQuestion" @bind="message" @onkeyup="HandleKeyUp" placeholder="Type your message here..." /> <button @onclick="SendMessage" class="btn btn-primary">Send Message</button>
@@ -114,9 +116,26 @@
             {
                 using var memoryStream = new MemoryStream();
                 await browserFile.OpenReadStream(1024 * 1024 * 10).CopyToAsync(memoryStream);
-                _attByte = memoryStream.ToArray();
-                _attType = browserFile.ContentType;
-                uploadMessage = "File uploaded successfully!";
+                if (browserFile.ContentType == "application/pdf")
+                {
+                    var pngImages = ConvertPdfToPng(memoryStream);
+                    if (pngImages.Count > 0)
+                    {
+                        _attByte = pngImages[0];
+                        _attType = "image/png";
+                        uploadMessage = "File uploaded successfully!";
+                    }
+                    else
+                    {
+                        uploadMessage = "Could not execute the pdf file. Please try again or upload a different file.";
+                    }
+                }
+                else
+                {                    
+                    _attByte = memoryStream.ToArray();
+                    _attType = browserFile.ContentType;
+                    uploadMessage = "File uploaded successfully!";
+                }                
                 StateHasChanged();
             }
             catch (Exception ex)
@@ -128,6 +147,30 @@
         {
             uploadMessage = "Please select a file to upload.";
         }
+    }
+
+    private List<byte[]> ConvertPdfToPng(Stream pdfStream)
+    {
+        var pngImages = new List<byte[]>();
+
+        // Thiết lập các thuộc tính render (DPI càng cao ảnh càng nét)
+        // RenderOptions là một 'record struct' nên khai báo dạng constructor/init
+        var options = new RenderOptions { Dpi = 150 };
+
+        // Conversion.ToImages sẽ trả về một chuỗi các SKBitmap (từ SkiaSharp)
+        foreach (var bitmap in Conversion.ToImages(pdfStream, options: options))
+        {
+            using (bitmap) // Giải phóng tài nguyên bitmap sau khi xử lý xong
+            using (var memoryStream = new MemoryStream())
+            {
+                // Sử dụng SkiaSharp để encode trực tiếp bitmap thành định dạng PNG chất lượng 100%
+                bitmap.Encode(memoryStream, SKEncodedImageFormat.Png, 100);
+                
+                pngImages.Add(memoryStream.ToArray());
+            }
+        }
+
+        return pngImages;
     }
 
     private class Message
